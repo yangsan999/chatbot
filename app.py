@@ -12,8 +12,11 @@ chatbot = Chatbot(config={
     "password": ""
 })
 
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/chat', methods=['GET', 'POST'])
 def home():
     if 'user_conversation' not in session:
         session['user_conversation'] = []
@@ -32,12 +35,12 @@ def home():
         user_conversation.append(('chatbot', response))
         session['user_conversation'] = user_conversation
 
-        return render_template('home.html', conversation=session['user_conversation'])
+        return render_template('chat.html', conversation=session['user_conversation'])
     else:
-        return render_template('home.html', conversation=session.get('user_conversation', []))
+        return render_template('chat.html', conversation=session.get('user_conversation', []))
 
 
-@app.route("/reset")
+@app.route("/reset", methods=['GET', 'POST'])
 def reset():
     # Delete the current conversation
     chatbot.delete_conversation(chatbot.conversation_id)

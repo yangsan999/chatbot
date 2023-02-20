@@ -19,33 +19,16 @@
             为保障用户的合法权益，我们郑重提醒您在使用本页面时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。<br>
             谢谢您的合作与支持。<br>
         </p>
-        {% include 'message.html' %}
     </div>
 
-    <form method="post" action="/" onsubmit="scrollToBottom()">
-        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required>
-        <input type="submit" value="发送">
-        <form method="get" action="/reset">
-            <input type="submit" value="重置">
-        </form>
+    <form method="post" action="/">
+        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required><br>
+        <input type="submit" name="action" value="发送提问" formaction="/chat">
+        <input type="submit" name="action" value="清除会话" formnovalidate formaction="/reset">
     </form>
-    <br>
+
     <img src="../static/nice.jpg" alt="点个赞">
 
-
-
-    <script>
-        function scrollToBottom() {
-            var chatWindow = document.getElementById("chat-window");
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-
-        // Scroll to the bottom of the chat window on page load
-        window.onload = function () {
-            scrollToBottom();
-        }
-
-    </script>
 </body>
 
 </html>
