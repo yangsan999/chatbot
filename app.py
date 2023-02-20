@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
 
 import secrets
@@ -35,6 +35,19 @@ def home():
         return render_template('home.html', conversation=session['user_conversation'])
     else:
         return render_template('home.html', conversation=session.get('user_conversation', []))
+
+
+@app.route("/reset")
+def reset():
+    # Delete the current conversation
+    chatbot.delete_conversation(chatbot.conversation_id)
+    session.pop('user_conversation', None)
+
+    # Reset the chatbot conversation and parent IDs
+    chatbot.reset_chat()
+
+    # Redirect to the index page
+    return redirect("/")
 
 
 if __name__ == '__main__':
