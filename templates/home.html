@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ChatGPT Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+
+<body>
+    <div class="chat-window" id="chat-window">
+        <p>
+            ChatGPT是一个超强的AI，它会写诗、写小说、写论文、答辩、编程......<br><br>
+            ChatGPT回复内容越长，所需时间也更长，请耐心等待......<br><br>
+            因试用人数过多，如果你提问后，ChatGPT立即回复空白消息，那么请你稍后再重试提问。<br><br><br>
+            免责声明：<br>
+            本页面开发目的仅用于学习和探索。<br>
+            通过使用、修改本页面内容随之而来的一切风险与本作者无关，请合理合法合规使用。<br>
+        </p>
+        {% include 'message.html' %}
+    </div>
+
+    <form method="post" action="/" onsubmit="scrollToBottom()">
+        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required>
+        <input type="submit" value="发送">
+    </form>
+    <br>
+    <img src="../static/nice.jpg" alt="点个赞">
+
+
+
+    <script>
+        function scrollToBottom() {
+            var chatWindow = document.getElementById("chat-window");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Scroll to the bottom of the chat window on page load
+        window.onload = function () {
+            scrollToBottom();
+        }
+
+    </script>
+</body>
+
+</html>

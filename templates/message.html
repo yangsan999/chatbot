@@ -1,0 +1,6 @@
+{% for message in conversation %}
+<div class="message {% if message[0] == 'user' %}user-message{% else %}chatbot-message{% endif %}">
+    <div class="message-text">{{ message[1] }}</div>
+    <div class="message-time">{{ message[2] }}</div>
+</div>
+{% endfor %}
