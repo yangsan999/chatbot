@@ -12,6 +12,7 @@ chatbot = Chatbot(config={
     "password": ""
 })
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user_conversation' not in session:
@@ -35,6 +36,7 @@ def home():
     else:
         return render_template('home.html', conversation=session.get('user_conversation', []))
 
+
 if __name__ == '__main__':
-    #You need to replace host and port
+    # Modify host and port accordingly
     app.run(host='172.31.22.91', port='80', debug=True)
