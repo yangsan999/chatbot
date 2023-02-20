@@ -36,4 +36,5 @@ def home():
         return render_template('home.html', conversation=session.get('user_conversation', []))
 
 if __name__ == '__main__':
+    #You need to replace host and port
     app.run(host='172.31.22.91', port='80', debug=True)

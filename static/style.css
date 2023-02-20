@@ -59,7 +59,12 @@ input[type="text"] {
     border-radius: 4px;
     background-color: #f8f8f8;
     font-size: 1.2em;
+    resize: vertical;
+    /* 允许垂直缩放 */
+    white-space: normal;
+    /* 允许自动换行 */
 }
+
 
 input[type="submit"] {
     background-color: #4CAF50;
