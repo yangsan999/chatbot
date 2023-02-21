@@ -1,25 +1,61 @@
+import secrets
+import os
+import json
+import redis
+
 from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
 
-import secrets
+
+# Get the path to the config file
+if os.name == 'posix':  # Unix-like systems (Linux, macOS, etc.)
+    config_path = os.path.join(os.environ['HOME'], 'Chatbot', 'config.json')
+elif os.name == 'nt':  # Windows
+    config_path = os.path.join(
+        os.environ['USERPROFILE'], 'Chatbot', 'config.json')
+
+# Load the JSON data from the config file
+with open(config_path, 'r') as f:
+    config_data = json.load(f)
+
+# email = config_data['email'] # email and password
+# password = config_data['password']
+# session_token = config_data['session_token'] # or session_token
+access_token = config_data['access_token']  # or access_token
+
+# Connect to Redis
+redis_client = redis.Redis(host='localhost', port=6379)
+
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-
 chatbot = Chatbot(config={
-    "email": "",
-    "password": ""
+    # "email": email,
+    # "password": password,
+    # "session_token": session_token,
+    "access_token": access_token
 })
+
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if 'user_id' in session and redis_client.exists(f'user_conversation:{session["user_id"]}'):
+        return redirect("/chat")
+    else:
+        return render_template("index.html")
+
 
 @app.route('/chat', methods=['GET', 'POST'])
 def home():
-    if 'user_conversation' not in session:
-        session['user_conversation'] = []
+    if 'user_id' not in session:
+        session['user_id'] = secrets.token_hex(16)
+
+    if redis_client.exists(f'user_conversation:{session["user_id"]}'):
+        user_conversation = json.loads(redis_client.get(
+            f'user_conversation:{session["user_id"]}'))
+    else:
+        user_conversation = []
 
     if request.method == 'POST':
         user_input = request.form['user_input']
@@ -30,21 +66,22 @@ def home():
             response += message
             prev_text = data["message"]
 
-        user_conversation = session['user_conversation']
         user_conversation.append(('user', user_input))
         user_conversation.append(('chatbot', response))
-        session['user_conversation'] = user_conversation
+        redis_client.set(
+            f'user_conversation:{session["user_id"]}', json.dumps(user_conversation))
 
-        return render_template('chat.html', conversation=session['user_conversation'])
+        return render_template('chat.html', conversation=user_conversation)
     else:
-        return render_template('chat.html', conversation=session.get('user_conversation', []))
+        return render_template('chat.html', conversation=user_conversation)
 
 
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
-    # Delete the current conversation
+    # Delete the current conversation from Redis
     chatbot.delete_conversation(chatbot.conversation_id)
-    session.pop('user_conversation', None)
+    if 'user_id' in session:
+        redis_client.delete(f'user_conversation:{session["user_id"]}')
 
     # Reset the chatbot conversation and parent IDs
     chatbot.reset_chat()
@@ -55,4 +92,4 @@ def reset():
 
 if __name__ == '__main__':
     # Modify host and port accordingly
-    app.run(host='172.31.22.91', port='80', debug=True)
+    app.run(host='0.0.0.0', port='80', debug=True)
