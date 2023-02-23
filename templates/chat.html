@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 {% for message in conversation %}
-<div class="message {% if message[0] == 'user' %}user-message{% else %}chatbot-message{% endif %}">
-    <div class="message-text"><pre id="message-text">{{ message[1] }}</pre></div>
+{% if message[0] == 'user' %}
+<div class="message user-message">
+    <div class="message-text">
+    🧑:<pre id="message-text">{{ message[1] }}</pre>
+    </div>
 </div>
+{% else %}
+<div class="message chatbot-message">
+    <div class="message-text">
+    🤖:<pre id="message-text">{{ message[1] }}</pre>
+    </div>
+</div>
+{% endif %}
+
 {% endfor %}
-<div class="message-text" id="streaming-chatbot"></div>
 {% endblock %}
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

@@ -5,20 +5,32 @@
     <title>ChatBot Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
-    <script src="../static/jquery-3.5.1.min.js"></script>
-
 </head>
 
 <body>
     <div class="chat-window" id="chat-window">
-        <p>
-            嗨！我是ChatBot，不是超人，但我能写诗、写小说、写文案、写作业，甚至还能替你应答和编程。<br><br>
-            不过，就像你在排队等大餐时一样，如果我回复得越多，你等待的时间也会越长。<br><br>
-            如果你提问后看到我马上回复空白信息，别急着离开我，这可能只是因为太多人在点餐，让我有些喘不过气来。<br><br><br>
-        </p>
+        <div id="selfintro">
+            <p>
+                嗨！我是ChatBot，不是超人，但我能写诗、写小说、写文案、写作业，写报告，写代码......<br><br>
+                不过，就像你在排队等大餐时一样，如果我回复得越多，你等待的时间也会越长。<br><br>
+                如果你提问后看到我马上回复空白信息，别急着离开我，这可能只是因为太多人在线，让我有些手忙脚乱。<br><br><br>
+            </p>
+        </div>
         {% block content %}
         {% endblock %}
-        <div id="loading" style="display:none;">🤖:  正在打字回复中，请稍等一下，不要重复提问...</div>
+        <P>
+        <div id="loading" style="display:none;">
+            <b>🤖: 正在打字回复中，请稍等一下，不要重复提问...<br><br></b>
+            <pre>
+    等待回复是不是很无聊，我们来看看如何与我有趣互动的例子：
+    1. 提出有趣的问题：您可以提出一些有趣的问题，让我回答。例如：“如果你是一个超级英雄，你想拥有什么超能力？”
+    2. 玩文字游戏：您可以和我玩文字游戏，例如“猜单词”、“词语接龙”等。
+    3. 聊天和分享故事：您可以和我聊天，分享您的故事和经历。我可以给您提供有用的建议和支持。
+    4. 让我讲笑话：如果您需要一些娱乐，可以让我给您讲笑话或谜语。
+    5. 测试我的知识：您可以测试我的知识，问我有关历史、文化、科学、技术等各个领域的问题。
+    6. ......</pre>
+        </div>
+        </P>
     </div>
 
     <form method="post" id="chat-form">
@@ -33,22 +45,17 @@
             var chatWindow = document.getElementById("chat-window");
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
-
-        // Add loading tips
+        // Add loading message
         document.getElementById("user_submit").addEventListener("click", function () {
-            let loading = document.getElementById('loading');
             loading.style.display = 'block';
-            scrollToBottom();
-            xhr.onload = function () {
-                loading.style.display = 'none';
-            }
+            selfintro.style.display = 'none';
+            disclaimer.style.display = 'none';
+            loading.scrollTop = loading.scrollHeight;
         });
-
         // Scroll to the bottom of the chat window on page load
         window.onload = function () {
             scrollToBottom();
         }
-
     </script>
 
 </body>

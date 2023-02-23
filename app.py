@@ -92,4 +92,4 @@ def reset():
 
 if __name__ == '__main__':
     # Modify host and port accordingly
-    app.run(host='0.0.0.0', port='8080', debug=True)
+    app.run(host='0.0.0.0', port='8080', debug=False)
