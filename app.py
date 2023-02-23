@@ -9,10 +9,10 @@ from revChatGPT.V1 import Chatbot
 
 # Get the path to the config file
 if os.name == 'posix':  # Unix-like systems (Linux, macOS, etc.)
-    config_path = os.path.join(os.environ['HOME'], 'Chatbot', 'config.json')
+    config_path = os.path.join(os.environ['HOME'], 'chatbot', 'config.json')
 elif os.name == 'nt':  # Windows
     config_path = os.path.join(
-        os.environ['USERPROFILE'], 'Chatbot', 'config.json')
+        os.environ['USERPROFILE'], 'chatbot', 'config.json')
 
 # Load the JSON data from the config file
 with open(config_path, 'r') as f:
@@ -47,7 +47,7 @@ def index():
 
 
 @app.route('/chat', methods=['GET', 'POST'])
-def home():
+def chat():
     if 'user_id' not in session:
         session['user_id'] = secrets.token_hex(16)
 
@@ -92,4 +92,4 @@ def reset():
 
 if __name__ == '__main__':
     # Modify host and port accordingly
-    app.run(host='0.0.0.0', port='80', debug=True)
+    app.run(host='0.0.0.0', port='8080', debug=True)
