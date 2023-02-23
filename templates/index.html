@@ -1,34 +1,10 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>ChatBot Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
-</head>
-
-<body>
-    <div class="chat-window" id="chat-window">
-        <p>
-            嗨！我是ChatBot，不是超人，但我能写诗、写小说、写文案、写作业，甚至还能替你应答和编程。<br><br>
-            不过，就像你在排队等大餐时一样，如果我回复得越多，你等待的时间也会越长。<br><br>
-            如果你提问后看到我马上回复空白信息，别急着离开我，这可能只是因为太多人在点餐，让我有些喘不过气来。<br><br><br>
-            免责声明：<br>
-            尊敬的用户，本页面的开发目的仅为学习和探索之用。<br>
-            使用或修改本页面的任何内容所引发的一切风险应由用户自行承担，与本作者无关。<br>
-            为保障用户的合法权益，我们郑重提醒您在使用本页面时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。<br>
-            谢谢您的合作与支持。<br>
-        </p>
-    </div>
-
-    <form method="post" action="/">
-        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required><br>
-        <input type="submit" name="action" value="发送提问" formaction="/chat">
-        <input type="submit" name="action" value="清除会话" formnovalidate formaction="/reset">
-    </form>
-
-    <img src="../static/nice.jpg" alt="点个赞">
-
-</body>
-
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <p>
+        免责声明：<br>
+        尊敬的用户，本页面的开发目的仅为学习和探索之用。<br>
+        使用或修改本页面的任何内容所引发的一切风险应由用户自行承担，与本作者无关。<br>
+        为保障用户的合法权益，我们郑重提醒您在使用本页面时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。<br>
+        谢谢您的合作与支持。<br>
+    </p>
+{% endblock %}

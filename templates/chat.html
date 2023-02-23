@@ -1,43 +1,17 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block content %}
+{% for message in conversation %}
+<div class="message {% if message[0] == 'user' %}user-message{% else %}chatbot-message{% endif %}">
+    <div class="message-text"><pre id="message-text">{{ message[1] }}</pre></div>
+</div>
+{% endfor %}
+<div class="message-text" id="streaming-chatbot"></div>
+{% endblock %}
 
-<head>
-    <title>ChatBot Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
-</head>
-
-<body>
-    <div class="chat-window" id="chat-window">
-        <p>
-            嗨！我是ChatBot，不是超人，但我能写诗、写小说、写文案、写作业，甚至还能替你应答和编程。<br><br>
-            不过，就像你在排队等大餐时一样，如果我回复得越多，你等待的时间也会越长。<br><br>
-            如果你提问后看到我马上回复空白信息，别急着离开我，这可能只是因为太多人在点餐，让我有些喘不过气来。<br><br><br>
-        </p>
-        {% include 'message.html' %}
-    </div>
-
-    <form method="post" action="/" onsubmit="scrollToBottom()">
-        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required><br>
-        <input type="submit" name="action" value="发送提问" formaction="/chat">
-        <input type="submit" name="action" value="清除会话" formnovalidate formaction="/reset">
-    </form>
-
-    <img src="../static/nice.jpg" alt="点个赞">
-
-
-    <script>
-        function scrollToBottom() {
-            var chatWindow = document.getElementById("chat-window");
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-
-        // Scroll to the bottom of the chat window on page load
-        window.onload = function () {
-            scrollToBottom();
-        }
-
-    </script>
-</body>
-
-</html>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    var messageElements = document.querySelectorAll('.message-text');
+    for (var i = 0; i < messageElements.length; i++) {
+        messageElements[i].innerHTML = marked.parse(messageElements[i].textContent.trim());
+    }
+</script>

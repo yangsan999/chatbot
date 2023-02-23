@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ChatBot Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script src="../static/jquery-3.5.1.min.js"></script>
+
+</head>
+
+<body>
+    <div class="chat-window" id="chat-window">
+        <p>
+            嗨！我是ChatBot，不是超人，但我能写诗、写小说、写文案、写作业，甚至还能替你应答和编程。<br><br>
+            不过，就像你在排队等大餐时一样，如果我回复得越多，你等待的时间也会越长。<br><br>
+            如果你提问后看到我马上回复空白信息，别急着离开我，这可能只是因为太多人在点餐，让我有些喘不过气来。<br><br><br>
+        </p>
+        {% block content %}
+        {% endblock %}
+        <div id="loading" style="display:none;">🤖:  正在打字回复中，请稍等一下，不要重复提问...</div>
+    </div>
+
+    <form method="post" id="chat-form">
+        <input type="text" name="user_input" placeholder="请文明守法提问..." autocomplete="off" required><br>
+        <input type="submit" id="user_submit" name="user_submit" value="发送提问" formaction="/chat">
+        <input type="submit" value="清除会话" formnovalidate formaction="/reset">
+    </form>
+
+    <img src="../static/nice.jpg" alt="点个赞">
+    <script>
+        function scrollToBottom() {
+            var chatWindow = document.getElementById("chat-window");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Add loading tips
+        document.getElementById("user_submit").addEventListener("click", function () {
+            let loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            scrollToBottom();
+            xhr.onload = function () {
+                loading.style.display = 'none';
+            }
+        });
+
+        // Scroll to the bottom of the chat window on page load
+        window.onload = function () {
+            scrollToBottom();
+        }
+
+    </script>
+
+</body>
+
+</html>

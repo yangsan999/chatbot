@@ -40,13 +40,6 @@
     padding: 10px;
 }
 
-.message-time {
-    font-size: 0.8em;
-    position: absolute;
-    bottom: -15px;
-    right: 0;
-    color: #aaa;
-}
 
 /* Input field styles */
 input[type="text"] {
@@ -84,6 +77,12 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #45a049;
+}
+
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 /* Images field styles */

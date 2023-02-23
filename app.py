@@ -62,9 +62,9 @@ def chat():
         response = ''
         prev_text = ''
         for data in chatbot.ask(user_input):
-            message = data["message"][len(prev_text):]
+            message = str(data["message"][len(prev_text):])
             response += message
-            prev_text = data["message"]
+            prev_text = str(data["message"])
 
         user_conversation.append(('user', user_input))
         user_conversation.append(('chatbot', response))
