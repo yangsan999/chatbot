@@ -1,10 +1,108 @@
-{% extends "base.html" %}
-{% block content %}
-    <div id="disclaimer"><p>
-        免责声明：<br>
-        尊敬的用户，本页面的开发目的仅为学习和探索之用。<br>
-        使用或修改本页面的任何内容所引发的一切风险应由用户自行承担，与本作者无关。<br>
-        为保障用户的合法权益，我们郑重提醒您在使用本页面时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。<br>
-        谢谢您的合作与支持。<br>
-    </p></div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+
+<body>
+    <div class="chat-window" id="chat-window">
+        <div id="selfintro">
+            <pre>
+    欢迎来和我聊天！
+    
+    我是聪明、幽默、永不疲倦的人工智能。
+
+    不知道怎么开始？试试下面这些问题，来和我一起探讨吧：
+    
+    1. 你会回答什么样的问题？
+    2. 能和我做个简单的智力游戏吗？
+    3. 有什么好玩的趣事或者奇闻可以分享吗？
+    4. 能帮我练习一下面试或演讲技巧吗？
+    5. 有什么方法可以激发创意和灵感吗？
+    6. 请帮我写工作总结、学习计划、冒险小说、一段代码......
+    
+    当然，你也可以随意提出你想聊的话题或者问题，我们会一起探讨，并尽力为你提供答案和建议。
+    
+    所以，快来和我聊天吧，让我们一起度过愉快的时光！
+            </pre>
+        </div>
+        {% block content %}
+        {% endblock %}
+        <P>
+        <div id="loading" style="display:none;">
+            <b>🤖: 正在打字回复中，请稍等一下，不要重复提问...<br><br></b>
+            <pre>
+    等待回复是不是很无聊，我们来看看如何与我有趣互动的例子：
+    1. 提出有趣的问题：您可以提出一些有趣的问题，让我回答。例如：“如果你是一个超级英雄，你想拥有什么超能力？”
+    2. 玩文字游戏：您可以和我玩文字游戏，例如“猜单词”、“词语接龙”等。
+    3. 聊天和分享故事：您可以和我聊天，分享您的故事和经历。我可以给您提供有用的建议和支持。
+    4. 让我讲笑话：如果您需要一些娱乐，可以让我给您讲笑话或谜语。
+    5. 测试我的知识：您可以测试我的知识，问我有关历史、文化、科学、技术等各个领域的问题。
+    6. ......</pre>
+        </div>
+        </P>
+    </div>
+
+    <form method="post" id="chat-form">
+        <textarea name="user_input" placeholder="请文明守法提问，拖拽右下角可拉长输入框" autocomplete="off" autofocus
+            required></textarea><br>
+        <input type="submit" id="user_submit" name="user_submit" value="发送提问" formaction="/chat">
+        <input type="submit" id="user_reset" value="清除会话" formnovalidate formaction="/reset">
+    </form>
+
+    <img src="../static/nice.jpg" alt="点个赞">
+    <br> <br> <br>
+    <div>
+        <pre>
+    免责声明：
+    尊敬的用户，本页面的开发目的仅为学习和探索之用。
+    使用或修改本页面的任何内容所引发的一切风险应由用户自行承担，与本作者无关。
+    为保障用户的合法权益，我们郑重提醒您在使用本页面时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。
+    谢谢您的合作与支持。
+        </pre>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            var chatWindow = document.getElementById("chat-window");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Scroll to the bottom of the chat window on page load
+        window.onload = function () {
+            scrollToBottom();
+        }
+    </script>
+    <script>
+        // Check if form has been submitted before
+        if (document.cookie.indexOf("selfintroHided=true") != -1) {
+            // Form has been submitted before, hide the div
+            document.getElementById("selfintro").style.display = "none";
+        }
+
+        // Display loading message, hide selfintro
+        var loading = document.getElementById("loading")
+        var selfintro = document.getElementById("selfintro")
+        var user_submit = document.getElementById("user_submit")
+        var user_reset = document.getElementById("user_reset")
+        user_submit.addEventListener("click", function () {
+            loading.style.display = 'block';
+            selfintro.style.display = 'none';
+            // Set a cookie to indicate form has been submitted
+            document.cookie = "selfintroHided=true";
+            loading.scrollTop = loading.scrollHeight;
+        })
+        user_reset.addEventListener("click", function () {
+            selfintro.style.display = 'block';
+            // Set a cookie to indicate form has been submitted
+            document.cookie = "selfintroHided=false";
+        })
+            ;
+    </script>
+
+</body>
+
+</html>

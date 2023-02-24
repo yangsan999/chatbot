@@ -42,8 +42,8 @@
 }
 
 
-/* Input field styles */
-input[type="text"] {
+/* Form field styles */
+textarea {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -59,11 +59,8 @@ input[type="text"] {
     border-radius: 4px;
     font-size: 1.2em;
     resize: vertical;
-    /* 允许垂直缩放 */
     white-space: normal;
-    /* 允许自动换行 */
 }
-
 
 input[type="submit"] {
     background-color: #4CAF50;
