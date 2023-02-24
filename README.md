@@ -77,6 +77,12 @@ https://chat.openai.com/api/auth/session
 python app.py
 ```
 
+or
+
+if you want to use gunicorn
+```bash
+gunicorn -b 0.0.0.0:8080 app:app --timeout 200 --worker-class gevent 
+```
 
 ## Usage
 

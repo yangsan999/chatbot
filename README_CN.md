@@ -66,14 +66,19 @@ https://chat.openai.com/api/auth/session
   "paid": false
 }
 ```
-
-3. 将其保存为`$HOME/chatbot/config.json`（在类Unix系统（Linux，macOS等）中）。
-4. 如果您使用Windows，请将其保存为`$USERPROFILE/chatbot/config.json`。
+3. 将config.json.example重命名为config.json，修改相关配置
+4. 将其保存为`$HOME/chatbot/config.json`（在类Unix系统（Linux，macOS等）中）。
+5. 如果您使用Windows，请将其保存为`$USERPROFILE/chatbot/config.json`。
 
 ## 运行应用程序：
 
+测试使用:
 ```bash
 python app.py
+```
+生产环境可以使用其他WSGI服务器，例如gunicorn：
+```bash
+gunicorn -b 0.0.0.0:8080 app:app --timeout 200 --worker-class gevent 
 ```
 
 ## 用法
@@ -96,3 +101,29 @@ python app.py
 使用或修改本项目的任何内容所引发的一切风险应由用户自行承担，与本作者无关。
 为保障用户的合法权益，我们郑重提醒您在使用本项目时，请确保符合相关法律法规及政策规定，并承担相应的法律责任。
 谢谢您的合作与支持。
+
+
+
+
+## 附录
+### 使用Docker Compose
+> 以下所有文件放同一目录
+1. 将config.json.example重命名为config.json，修改相关配置
+2. 新建`docker-compose.yml`配置文件，粘贴以下内容并保存
+```bash
+services:
+  chatgpt:
+    image: sheepgreen/chatgpt-html:proxy #如果是arm架构，请换成chatgpt-html:proxyarm
+    container_name: chatbot
+#    environment:
+#      - CHATGPT_BASE_URL=你的代理服务端地址（不填默认使用作者服务器，目前偶尔会不可用）
+    volumes:
+      - ./config.json:/chatgpt-html/config.json
+#      - ./chat.html:/chatgpt-html/templates/chat.html #默认内置我的UI，如需替换自用网页请取消注释
+    ports:
+      - "9999:8088" #8088为容器内端口，不可更换；9999为外部端口，可自行更换
+    restart: always
+```
+- 输入`docker-compose up -d`即启动成功
+## 注意事项
+- 访问地址为http://ip:port

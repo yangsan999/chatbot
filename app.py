@@ -5,7 +5,6 @@ import json
 from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
 
-
 # Get the path to the config file
 if os.name == 'posix':  # Unix-like systems (Linux, macOS, etc.)
     config_path = os.path.join(os.environ['HOME'], 'chatbot', 'config.json')
