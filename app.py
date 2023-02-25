@@ -5,15 +5,9 @@ import json
 from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
 
-# Get the path to the config file
-if os.name == 'posix':  # Unix-like systems (Linux, macOS, etc.)
-    config_path = os.path.join(os.environ['HOME'], 'chatbot', 'config.json')
-elif os.name == 'nt':  # Windows
-    config_path = os.path.join(
-        os.environ['USERPROFILE'], 'chatbot', 'config.json')
 
 # Load the JSON data from the config file
-with open(config_path, 'r') as f:
+with open("config.json", 'r') as f:
     config_data = json.load(f)
 
 # email = config_data['email'] # email and password
@@ -64,7 +58,7 @@ def chat():
                 response += message
                 prev_text = str(data["message"])
         except Exception as e:
-            response = "对不起，我忙不过来了，请稍后重试...\n Sorry, I am too busing. Please try again later."
+            response = "对不起，我忙不过来了，请稍后重试...\nSorry, I am too busing. Please try again later."
 
         user_conversation.append(('user', user_input))
         user_conversation.append(('chatbot', response))
