@@ -1,41 +1,78 @@
 import secrets
-import os
 import json
 
 from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
+from OpenAIAuth import Error
 
 
-# Load the JSON data from the config file
-with open("config.json", 'r') as f:
-    config_data = json.load(f)
+# # Load the JSON data from the config file
+# with open("config.json", 'r') as f:
+#     config_data = json.load(f)
 
 # email = config_data['email'] # email and password
 # password = config_data['password']
 # session_token = config_data['session_token'] # or session_token
-access_token = config_data['access_token']  # or access_token
+# access_token = config_data['access_token']  # or access_token
 
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-chatbot = Chatbot(config={
-    # "email": email,
-    # "password": password,
-    # "session_token": session_token,
-    "access_token": access_token
-})
+# chatbot = Chatbot(config={
+#     # "email": email,
+#     # "password": password,
+#     # "session_token": session_token,
+#     "access_token": access_token
+# })
 
 # create empty conversation dictionary
 conversations = {}
 
 
+# @app.route("/")
+# def index():
+#     if 'user_id' in session and session['user_id'] in conversations:
+#         return redirect("/chat")
+#     else:
+#         return render_template("index.html")
 @app.route("/")
 def index():
-    if 'user_id' in session and session['user_id'] in conversations:
-        return redirect("/chat")
+    if 'email' in session and 'password' in session:
+        # User is logged in, so display the chat page
+        if 'user_id' in session and session['user_id'] in conversations:
+            return redirect("/chat")
+        else:
+            return render_template("index.html")
     else:
-        return render_template("index.html")
+        # User is not logged in, so redirect to the login page
+        return redirect("/login")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        # Store the email and password in the session
+        session['email'] = email
+        session['password'] = password
+        # Initialize the chatbot with the session credentials
+        global chatbot
+        # chatbot = Chatbot(config={
+        #     "email": session['email'],
+        #     "password": session['password'],
+        #     # "access_token": access_token
+        # })
+        try:
+            chatbot = Chatbot(config={
+                "email": email,
+                "password": password
+            })
+        except Error as e:
+            return "Authentication error {}".format(str(e))
+        return redirect('/')
+    else:
+        return render_template('login.html')
 
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -58,7 +95,7 @@ def chat():
                 response += message
                 prev_text = str(data["message"])
         except Exception as e:
-            response = "对不起，我忙不过来了，请稍后重试...\nSorry, I am too busing. Please try again later."
+            response = "对不起，我忙不过来了，请稍后重试...\nSorry, I am too busy. Please try again later."
 
         user_conversation.append(('user', user_input))
         user_conversation.append(('chatbot', response))

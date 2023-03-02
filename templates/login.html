@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chatbot Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			background-color: #f0f0f0;
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			margin: 0 auto;
+			max-width: 400px;
+			padding: 20px;
+		}
+
+		h1 {
+			font-size: 24px;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		form label, form input {
+			display: block;
+			margin-bottom: 20px;
+			width: 100%;
+		}
+
+		form label {
+			font-size: 16px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		form input[type="email"],
+		form input[type="password"] {
+			background-color: #f8f8f8;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+			font-size: 16px;
+			padding: 10px;
+			width: 100%;
+		}
+
+		form input[type="submit"],
+		form input[type="reset"] {
+			background-color: #4CAF50;
+			border: none;
+			border-radius: 4px;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			padding: 10px;
+			margin-top: 20px;
+			width: 100%;
+		}
+
+		form input[type="submit"]:hover,
+		form input[type="reset"]:hover {
+			background-color: #3e8e41;
+		}
+
+		form p {
+			color: red;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>登录 Login</h1>
+		<form method="post" action="{{ url_for('login') }}">
+			{% if error %}
+				<p>{{ error }}</p>
+			{% endif %}
+			<label for="email">邮件地址 Email:</label>
+			<input type="email" name="email" required>
+			<label for="password">密码 Password:</label>
+			<input type="password" name="password" required>
+			<input type="submit" value="登录 Login">
+			<input type="reset" value="重置 Reset">
+		</form>
+	</div>
+</body>
+</html>
