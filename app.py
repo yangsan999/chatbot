@@ -1,41 +1,16 @@
 import secrets
-import json
 
 from flask import Flask, render_template, request, session, redirect
 from revChatGPT.V1 import Chatbot
 from OpenAIAuth import Error
 
 
-# # Load the JSON data from the config file
-# with open("config.json", 'r') as f:
-#     config_data = json.load(f)
-
-# email = config_data['email'] # email and password
-# password = config_data['password']
-# session_token = config_data['session_token'] # or session_token
-# access_token = config_data['access_token']  # or access_token
-
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
-# chatbot = Chatbot(config={
-#     # "email": email,
-#     # "password": password,
-#     # "session_token": session_token,
-#     "access_token": access_token
-# })
 
 # create empty conversation dictionary
 conversations = {}
 
-
-# @app.route("/")
-# def index():
-#     if 'user_id' in session and session['user_id'] in conversations:
-#         return redirect("/chat")
-#     else:
-#         return render_template("index.html")
 @app.route("/")
 def index():
     if 'email' in session and 'password' in session:
@@ -58,11 +33,6 @@ def login():
         session['password'] = password
         # Initialize the chatbot with the session credentials
         global chatbot
-        # chatbot = Chatbot(config={
-        #     "email": session['email'],
-        #     "password": session['password'],
-        #     # "access_token": access_token
-        # })
         try:
             chatbot = Chatbot(config={
                 "email": email,
@@ -116,13 +86,11 @@ def reset():
         chatbot.reset_chat()
 
         # Redirect to the index page
-        return redirect("/")
+        return redirect("/chat")
     except Exception as e:
-        # error_message = "对不起，因流量过多，重置会话超时了，正在重载页面"
-        # return render_template("error.html", message=error_message)
-        return redirect("/")
+        return redirect("/chat")
 
 
 if __name__ == '__main__':
     # Modify host and port accordingly
-    app.run(host='0.0.0.0', port='8080', debug=False)
+    app.run(host='0.0.0.0', port='8080', ssl_context=('cert.pem', 'key.pem'))
